@@ -48,7 +48,7 @@ The `dirStack` project provides a command-line interface (CLI) tool designed to 
           };
         }
         ```
-     2. Add this to your overlays to expose dirStack to your pkgs
+     2. Add the overlay to expose dirStack to your pkgs
         ```nix
         overlays = [ inputs.dirStack.overlays.default ];
         ```
