@@ -23,7 +23,7 @@
         in {
           default = pkgs.rustPlatform.buildRustPackage {
             pname = "dirStack";
-            version = "0.0.1";
+            version = "1.0.0";
             propagatedBuildInputs = with pkgs; [ fzf ];
             cargoLock.lockFile = ./Cargo.lock;
             src = pkgs.lib.cleanSource ./.;
