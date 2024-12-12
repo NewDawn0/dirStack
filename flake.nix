@@ -23,7 +23,7 @@
           pkgs = mkPkgs system;
           meta = pkgs:
             with pkgs.lib; {
-              description = "A better pushd interface";
+              description = "A cd quicklist";
               homepage = "https://github.com/NewDawn0/dirStack";
               maintainers = with maintainers; [ NewDawn0 ];
               license = licenses.mit;
@@ -52,6 +52,7 @@
             shellHook = ''
               source $out/lib/SOURCE_ME.sh
             '';
+            meta = (meta pkgs);
           };
         });
     };
