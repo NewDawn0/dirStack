@@ -11,15 +11,14 @@ use std::{
 // Consts
 const NC: &'static str = "\x1b[0m";
 const RED: &'static str = "\x1b[1;31m";
-const GREEN: &'static str = "\x1b[1;32m";
 const COL: &'static str = "\x1b[1;33m";
 const STACK_DIR: &'static str = "/tmp/dirStack";
 
 fn help() {
-    let banner: &str = r#"     _ _      ____  _             _    
+    let banner: &str = r#"     _ _      ____  _             _
   __| (_)_ __/ ___|| |_ __ _  ___| | __
  / _` | | '__\___ \| __/ _` |/ __| |/ /
-| (_| | | |   ___) | || (_| | (__|   < 
+| (_| | | |   ___) | || (_| | (__|   <
  \__,_|_|_|  |____/ \__\__,_|\___|_|\_\
 =============©NewDawn0================="#;
     println!("{}{}{}", COL, banner, NC);
@@ -48,7 +47,7 @@ fn help() {
         COL, NC, COL, NC
     );
     println!(
-        "  {}-i{} | {}--init{}       Generate the initalizer script",
+        "  {}-i{} | {}--init{}       Generate the initializer script",
         COL, NC, COL, NC
     );
     exit(0)
@@ -88,9 +87,7 @@ fn init() {
         fi
     done <<< "$output"
 }"#;
-    println!("{}[INFO]{} Paste the following in your shell rc\n```", GREEN, NC);
     println!("{}", func);
-    println!("```");
 }
 fn select(selection: Vec<String>) -> Result<String, Box<dyn std::error::Error>> {
     let mut fzf = Fzf::builder()
@@ -129,7 +126,7 @@ fn select_wrapped() {
         },
         Err(_) => {
             eprintln!(
-                "{}[ERROR]{} An error occured whilst reading the stack",
+                "{}[ERROR]{} An error occurred whilst reading the stack",
                 RED, NC
             );
             eprintln!("    {}`->{} Aborting", RED, NC);
@@ -210,7 +207,7 @@ fn list_wrapped() {
         }
         Err(_) => {
             eprintln!(
-                "{}[ERROR]{} An error occured whilst reading the stack",
+                "{}[ERROR]{} An error occurred whilst reading the stack",
                 RED, NC
             );
             eprintln!("    {}`->{} Aborting", RED, NC);
