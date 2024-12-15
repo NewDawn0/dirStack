@@ -21,38 +21,42 @@
       packages = eachSystem (system:
         let
           pkgs = mkPkgs system;
-          meta = pkgs:
-            with pkgs.lib; {
-              description = "A cd quicklist";
-              homepage = "https://github.com/NewDawn0/dirStack";
-              maintainers = with maintainers; [ NewDawn0 ];
-              license = licenses.mit;
-            };
-          pkg = pkgs:
-            pkgs.rustPlatform.buildRustPackage {
-              meta = (meta pkgs);
-              pname = "dirStack";
-              version = "1.0.0";
-              propagatedBuildInputs = with pkgs; [ fzf ];
-              cargoLock.lockFile = ./Cargo.lock;
-              src = pkgs.lib.cleanSource ./.;
-            };
+          version = "1.0.0";
+          meta = {
+            description = "A fast directory navigation tool with a quicklist";
+            longDescription = ''
+              This utility allows you to change directories quickly using a user defined list of frequently used paths.
+              It reduces the time spent on navigation and enhances workflow efficiency.
+            '';
+            homepage = "https://github.com/NewDawn0/dirStack";
+            license = pkgs.lib.licenses.mit;
+            maintainers = with pkgs.lib.maintainers; [ NewDawn0 ];
+            platforms = pkgs.lib.platforms.all;
+          };
+          pkg = pkgs.rustPlatform.buildRustPackage {
+            inherit meta version;
+            pname = "dirStack";
+            src = ./.;
+            cargoHash = "sha256-y3ELhG4877X6Cysg9NMaD/QC3SfPBdk2Vh1QeHF1+pU=";
+            propagatedBuildInputs = with pkgs; [ fzf ];
+          };
         in {
           default = pkgs.stdenv.mkDerivation {
-            name = "dirStack-wrapped";
-            version = "1.0.0";
-            phases = [ "installPhase" ];
+            inherit meta version;
+            pname = "dirStack-wrapped";
+            src = null;
+            dontUnpack = true;
+            dontBuild = true;
+            dontConfigure = true;
             installPhase = ''
-              mkdir -p $out/bin $out/lib
-              cp ${pkg pkgs}/bin/dirStack $out/bin/
-              echo "#!/usr/bin/env bash" > $out/lib/SOURCE_ME.sh
+              install -D ${pkg}/bin/dirStack -t $out/bin
+              mkdir -p $out/lib
+              echo "#!/${pkgs.runtimeShell}" > $out/lib/SOURCE_ME.sh
               $out/bin/dirStack --init >> $out/lib/SOURCE_ME.sh
-              chmod +x $out/lib/SOURCE_ME.sh
             '';
             shellHook = ''
               source $out/lib/SOURCE_ME.sh
             '';
-            meta = (meta pkgs);
           };
         });
     };
