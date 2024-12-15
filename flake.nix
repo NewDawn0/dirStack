@@ -37,7 +37,7 @@
             inherit meta version;
             pname = "dirStack";
             src = ./.;
-            cargoHash = "sha256-y3ELhG4877X6Cysg9NMaD/QC3SfPBdk2Vh1QeHF1+pU=";
+            cargoHash = "sha256-ismRyvNGqWkACVwz7+2EFh114DevtwWGtdbB/w4Yqz8=";
             propagatedBuildInputs = with pkgs; [ fzf ];
           };
         in {
