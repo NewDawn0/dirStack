@@ -2,28 +2,27 @@
   description = "A better pushd interface";
 
   inputs = {
+    utils.url = "github:NewDawn0/nixUtils";
     nixpkgs.url = "github:nixos/nixpkgs";
-    nix-systems.url = "github:nix-systems/default";
     rust-overlay.url = "github:oxalica/rust-overlay";
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs = { self, utils, nixpkgs, ... }@inputs:
     let
-      eachSystem = nixpkgs.lib.genAttrs (import inputs.nix-systems);
       mkPkgs = system:
         import nixpkgs {
           inherit system;
           overlays = [ inputs.rust-overlay.overlays.default ];
         };
     in {
-      overlays.default =
-        (final: prev: { dirStack = self.packages.${prev.system}.default; });
-      packages = eachSystem (system:
+      overlays.default = final: prev: {
+        dirStack = self.packages.${prev.system}.default;
+      };
+      packages = utils.lib.eachSystem { inherit mkPkgs; } (pkgs:
         let
-          pkgs = mkPkgs system;
           version = "1.0.0";
           meta = {
-            description = "A fast directory navigation tool with a quicklist";
+            description = "Fast directory navigation tool with a quicklist";
             longDescription = ''
               This utility allows you to change directories quickly using a user defined list of frequently used paths.
               It reduces the time spent on navigation and enhances workflow efficiency.
@@ -33,15 +32,16 @@
             maintainers = with pkgs.lib.maintainers; [ NewDawn0 ];
             platforms = pkgs.lib.platforms.all;
           };
-          pkg = pkgs.rustPlatform.buildRustPackage {
+          basePkg = pkgs.rustPlatform.buildRustPackage {
             inherit meta version;
             pname = "dirStack";
             src = ./.;
-            cargoHash = "sha256-ismRyvNGqWkACVwz7+2EFh114DevtwWGtdbB/w4Yqz8=";
+            useFetchCargoVendor = true;
+            cargoHash = "sha256-Q0PqPWT31k8n4YboELd/OgX4FsdSUtWnSyofuEoADnU=";
             propagatedBuildInputs = with pkgs; [ fzf ];
           };
         in {
-          default = pkgs.stdenv.mkDerivation {
+          default = pkgs.stdenvNoCC.mkDerivation {
             inherit meta version;
             pname = "dirStack-wrapped";
             src = null;
@@ -49,7 +49,7 @@
             dontBuild = true;
             dontConfigure = true;
             installPhase = ''
-              install -D ${pkg}/bin/dirStack -t $out/bin
+              install -D ${basePkg}/bin/dirStack -t $out/bin
               mkdir -p $out/lib
               echo "#!/${pkgs.runtimeShell}" > $out/lib/SOURCE_ME.sh
               $out/bin/dirStack --init >> $out/lib/SOURCE_ME.sh
