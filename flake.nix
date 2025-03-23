@@ -32,7 +32,7 @@
       in {
         default = pkgs.stdenvNoCC.mkDerivation {
           inherit meta version;
-          pname = "dirStack-wrapped";
+          name = "dirStack";
           src = null;
           dontUnpack = true;
           dontBuild = true;
