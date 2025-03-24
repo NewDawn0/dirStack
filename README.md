@@ -38,7 +38,7 @@ The `dirStack` project provides a command-line interface (CLI) tool designed to 
         {
           inputs = {
             # Your other inputs ...
-            dirStack = {
+            ds = {
               url = "github:NewDawn0/dirStack";
               inputs.nixpkgs.follows = "nixpkgs";
               # Optional: If you use nix-systems or rust-overlay
@@ -50,15 +50,15 @@ The `dirStack` project provides a command-line interface (CLI) tool designed to 
         ```
      2. Add the overlay to expose dirStack to your pkgs
         ```nix
-        overlays = [ inputs.dirStack.overlays.default ];
+        overlays = [ inputs.ds.overlays.default ];
         ```
      3. Then you can either install it in your `environment.systemPackages` using
         ```nix
-        environment.systemPackages = with pkgs; [ dirStack ];
+        environment.systemPackages = with pkgs; [ dir-stack ];
         ```
         or install it to your `home.packages`
         ```nix
-        home.packages = with pkgs; [ dirStack ];
+        home.packages = with pkgs; [ dir-stack ];
         ```
 
 2. Initialize the shell extension

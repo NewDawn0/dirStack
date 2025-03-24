@@ -3,9 +3,9 @@
 
   inputs.utils.url = "github:NewDawn0/nixUtils";
 
-  outputs = { self, utils, ... }@inputs: {
+  outputs = { self, utils, ... }: {
     overlays.default = final: prev: {
-      dirStack = self.packages.${prev.system}.default;
+      dir-stack = self.packages.${prev.system}.default;
     };
     packages = utils.lib.eachSystem { } (pkgs:
       let
