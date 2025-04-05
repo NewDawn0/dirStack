@@ -40,11 +40,11 @@
           installPhase = ''
             install -D ${basePkg}/bin/dirStack -t $out/bin
             mkdir -p $out/lib
-            echo "#!/${pkgs.runtimeShell}" > $out/lib/SOURCE_ME.sh
-            $out/bin/dirStack --init >> $out/lib/SOURCE_ME.sh
+            echo "#!/${pkgs.runtimeShell}" > $out/share/SOURCE_ME.sh
+            $out/bin/dirStack --init >> $out/share/SOURCE_ME.sh
           '';
           shellHook = ''
-            source $out/lib/SOURCE_ME.sh
+            source $out/share/SOURCE_ME.sh
           '';
         };
       });
