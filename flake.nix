@@ -38,10 +38,10 @@
           dontBuild = true;
           dontConfigure = true;
           installPhase = ''
-            install -D ${basePkg}/bin/dirStack -t $out/bin
-            mkdir -p $out/lib
-            echo "#!/${pkgs.runtimeShell}" > $out/share/SOURCE_ME.sh
-            $out/bin/dirStack --init >> $out/share/SOURCE_ME.sh
+            install -D ${basePkg}/bin/dirStack $out/bin/dirStack
+            echo "#!${pkgs.runtimeShell}" > SOURCE_ME.sh
+            $out/bin/dirStack --init >> SOURCE_ME.sh
+            install -D SOURCE_ME.sh $out/share/SOURCE_ME.sh
           '';
           shellHook = ''
             source $out/share/SOURCE_ME.sh
