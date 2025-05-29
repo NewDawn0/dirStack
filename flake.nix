@@ -41,10 +41,10 @@
             install -D ${basePkg}/bin/dirStack $out/bin/dirStack
             echo "#!${pkgs.runtimeShell}" > SOURCE_ME.sh
             $out/bin/dirStack --init >> SOURCE_ME.sh
-            install -D SOURCE_ME.sh $out/share/SOURCE_ME.sh
+            install -Dm644 SOURCE_ME.sh $out/share/dirStack/SOURCE_ME.sh
           '';
           shellHook = ''
-            source $out/share/SOURCE_ME.sh
+            source $out/share/dirStack/SOURCE_ME.sh
           '';
         };
       });
